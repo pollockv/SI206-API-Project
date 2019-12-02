@@ -1,22 +1,15 @@
-import sys
 import spotipy
-import spotipy.util as util
+from spotipy.oauth2 import SpotifyClientCredentials #To access authorised Spotify data
 
-scope = 'user-library-read'
+client_id = "9db9eeacd0004463b836ed7e1c7869e8"
+client_secret = "2eb76cf70264493abde544ba5a65a1ae"
+client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager) #spotify object to access API
 
-if len(sys.argv) > 1:
-    username = sys.argv[1]
-else:
-    print "Usage: %s username" % (sys.argv[0],)
-    sys.exit()
+name = "Playlist 1" #chosen artist
+result = sp.search(name) #search query
+print(result['tracks']['items'][0]['artists'])
 
-token = util.prompt_for_user_token(username, scope)
-
-if token:
-    sp = spotipy.Spotify(auth=token)
-    results = sp.current_user_saved_tracks()
-    for item in results['items']:
-        track = item['track']
-        print track['name'] + ' - ' + track['artists'][0]['name']
-else:
-    print "Can't get token for", username
+# SQL for putting values into db tables
+# INSERT INTO table_name (column1, column2, column3, ...)
+# VALUES (value1, value2, value3, ...);
