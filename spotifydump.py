@@ -29,24 +29,12 @@ def readDataFromFile(filename):
     return json_data
 
 def show_tracks(tracks):
-    for i, item in enumerate(tracks['items']):
+    trackdict = {}
+    for item in enumerate(tracks['items']):
         track = item['track']
-        print("   %d %32.32s %s" % (i, track['artists'][0]['name'],
-            track['name']))
+        artist = track['artists'][0]['name']
+        track_name = track['name']
 
-
-# conn = sqlite3.connect('geodata.sqlite')
-# cur = conn.cursor()
-
-# cur.execute('''
-# CREATE TABLE IF NOT EXISTS Locations (address TEXT, geodata TEXT)''')
-
-# for item in results['tracks']['items']:
-#     print(item)
-
-# SQL for putting values into db tables
-# INSERT INTO table_name (column1, column2, column3, ...)
-# VALUES (value1, value2, value3, ...);
 
 def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
