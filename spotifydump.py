@@ -29,10 +29,12 @@ def readDataFromFile(filename):
     return json_data
 
 def show_tracks(tracks):
-    for i, item in enumerate(tracks['items']):
+    trackdict = {}
+    for item in enumerate(tracks['items']):
         track = item['track']
-        print("   %d %32.32s %s" % (i, track['artists'][0]['name'],
-            track['name']))
+        artist = track['artists'][0]['name']
+        track_name = track['name']
+
 
 def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
