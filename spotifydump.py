@@ -28,6 +28,12 @@ def readDataFromFile(filename):
     json_data = json.loads(file_data)
     return json_data
 
+def show_tracks(tracks):
+    for i, item in enumerate(tracks['items']):
+        track = item['track']
+        print("   %d %32.32s %s" % (i, track['artists'][0]['name'],
+            track['name']))
+
 
 # conn = sqlite3.connect('geodata.sqlite')
 # cur = conn.cursor()
@@ -43,15 +49,14 @@ def readDataFromFile(filename):
 # VALUES (value1, value2, value3, ...);
 
 def main():
-    playlist1 = "Car Playlist" #chosen playlist
-    # playlist1 = "Study Playlist"
-    # results = sp.search(playlist1) #search query
-    # print(results['tracks']['items'][0])
-    #saveTextFile(results, 'results.txt')
+    studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
+    carplaylist = "1I2JfNqzWCNvGUI6EDbqVC"
+    username = "p85ag2eg0vz37ioz6t2iw1t2s"
+    #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
 
-    playlists = sp.search(playlist1)
+    playlists = sp.user_playlists(username)
     for playlist in playlists['items']:
-            print("\n")
+        if playlist['owner']['id'] == username:
             print(playlist['name'])
             print('  total tracks', playlist['tracks']['total'])
             results = sp.user_playlist(username, playlist['id'],
@@ -64,4 +69,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    unittest.main(verbosity = 2)
