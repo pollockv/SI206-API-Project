@@ -28,20 +28,51 @@ def readDataFromFile(filename):
     json_data = json.loads(file_data)
     return json_data
 
-def show_tracks(tracks):
-    trackdict = {}
+def show_tracks(tracks, username, playlist_id):
+    track_dict = {}
+    results = sp.user_playlist(username, playlist['id'],
+                fields="tracks,next")
+    tracks = results['tracks']
     for item in enumerate(tracks['items']):
         track = item['track']
         artist = track['artists'][0]['name']
-        track_name = track['name']
+        song = track['name']
+        if artist in track_dict:
+            track_dict[artist] = song
+        else:
+            track_dict[artist] = song
+    while tracks['next']:
+        tracks = sp.next(tracks)
+        for item in enumerate(tracks['items']):
+            track = item['track']
+            artist = track['artists'][0]['name']
+            song = track['name']
+            if artist in track_dict:
+                track_dict[artist] = song
+            else:
+                track_dict[artist] = song
+    return track_dict
 
+
+# conn = sqlite3.connect('geodata.sqlite')
+# cur = conn.cursor()
+
+# cur.execute('''
+# CREATE TABLE IF NOT EXISTS Locations (address TEXT, geodata TEXT)''')
+
+# for item in results['tracks']['items']:
+#     print(item)
+
+# SQL for putting values into db tables
+# INSERT INTO table_name (column1, column2, column3, ...)
+# VALUES (value1, value2, value3, ...);
 
 def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
     carplaylist = "1I2JfNqzWCNvGUI6EDbqVC"
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
     #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
-
+    
     playlists = sp.user_playlists(username)
     for playlist in playlists['items']:
         if playlist['owner']['id'] == username:
