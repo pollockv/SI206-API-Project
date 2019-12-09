@@ -28,30 +28,30 @@ def readDataFromFile(filename):
     json_data = json.loads(file_data)
     return json_data
 
-def show_tracks(tracks, username, playlist_id):
+def show_tracks(username, playlist_id):
     track_dict = {}
-    results = sp.user_playlist(username, playlist['id'],
-                fields="tracks,next")
+    results = sp.user_playlist(username, playlist_id, fields="tracks,next")
     tracks = results['tracks']
     for item in enumerate(tracks['items']):
-        track = item['track']
+        track = item[1]['track']
         artist = track['artists'][0]['name']
         song = track['name']
         if artist in track_dict:
-            track_dict[artist] = song
+            track_dict[artist].append(song)
         else:
-            track_dict[artist] = song
+            track_dict[artist] = [song]
     while tracks['next']:
         tracks = sp.next(tracks)
         for item in enumerate(tracks['items']):
-            track = item['track']
+            track = item[1]['track']
             artist = track['artists'][0]['name']
             song = track['name']
             if artist in track_dict:
-                track_dict[artist] = song
+                track_dict[artist].append(song)
             else:
-                track_dict[artist] = song
+                track_dict[artist] = [song]
     return track_dict
+
 
 
 # conn = sqlite3.connect('geodata.sqlite')
@@ -71,20 +71,10 @@ def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
     carplaylist = "1I2JfNqzWCNvGUI6EDbqVC"
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
-    #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
-    
-    playlists = sp.user_playlists(username)
-    for playlist in playlists['items']:
-        if playlist['owner']['id'] == username:
-            print(playlist['name'])
-            print('  total tracks', playlist['tracks']['total'])
-            results = sp.user_playlist(username, playlist['id'],
-                fields="tracks,next")
-            tracks = results['tracks']
-            show_tracks(tracks)
-            while tracks['next']:
-                tracks = sp.next(tracks)
-                show_tracks(tracks)
+    results_for_study = show_tracks(username, studyplaylist)
+    results_for_car = show_tracks(username, carplaylist)
+    print(results_for_car)
+
 
 if __name__ == "__main__":
     main()
