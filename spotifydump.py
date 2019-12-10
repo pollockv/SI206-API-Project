@@ -28,30 +28,41 @@ def readDataFromFile(filename):
     json_data = json.loads(file_data)
     return json_data
 
-def show_tracks(tracks, username, playlist_id):
+def show_tracks(username, playlist_id):
     track_dict = {}
-    results = sp.user_playlist(username, playlist['id'],
-                fields="tracks,next")
+    results = sp.user_playlist(username, playlist_id, fields="tracks,next")
     tracks = results['tracks']
     for item in enumerate(tracks['items']):
-        track = item['track']
+        track = item[1]['track']
         artist = track['artists'][0]['name']
         song = track['name']
         if artist in track_dict:
-            track_dict[artist] = song
+            track_dict[artist].append(song)
         else:
-            track_dict[artist] = song
+            track_dict[artist] = [song]
     while tracks['next']:
         tracks = sp.next(tracks)
         for item in enumerate(tracks['items']):
-            track = item['track']
+            track = item[1]['track']
             artist = track['artists'][0]['name']
             song = track['name']
             if artist in track_dict:
-                track_dict[artist] = song
+                track_dict[artist].append(song)
             else:
-                track_dict[artist] = song
+                track_dict[artist] = [song]
     return track_dict
+
+def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP"):
+    baseurl="https://tastedive.com/api/similar"
+    params_d = {}
+    params_d["q"]= bandName
+    params_d["k"]= key
+    params_d["type"]= "music"
+    params_d["limit"] = "20"
+    resp = requests.get(baseurl, params=params_d)
+    print(resp.url)
+    respDic = resp.json()
+    return respDic 
 
 
 # conn = sqlite3.connect('geodata.sqlite')
@@ -71,9 +82,14 @@ def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
     carplaylist = "1I2JfNqzWCNvGUI6EDbqVC"
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
+    results_for_study = show_tracks(username, studyplaylist)
+    results_for_car = show_tracks(username, carplaylist)
+    for artist in results_for_study:
+        dict_results = get_recommendations_from_tastedive(artist, key="349890-SI206Fin-N4RHDBVP")
+        print(dict_results)
     #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
     
-    playlists = sp.user_playlists(username)
+    '''playlists = sp.user_playlists(username)
     for playlist in playlists['items']:
         if playlist['owner']['id'] == username:
             print(playlist['name'])
@@ -84,7 +100,7 @@ def main():
             show_tracks(tracks)
             while tracks['next']:
                 tracks = sp.next(tracks)
-                show_tracks(tracks)
+                show_tracks(tracks)'''
 
 if __name__ == "__main__":
     main()
