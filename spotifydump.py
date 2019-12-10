@@ -52,6 +52,18 @@ def show_tracks(username, playlist_id):
                 track_dict[artist] = [song]
     return track_dict
 
+def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP"):
+    baseurl="https://tastedive.com/api/similar"
+    params_d = {}
+    params_d["q"]= bandName
+    params_d["k"]= key
+    params_d["type"]= "music"
+    params_d["limit"] = "20"
+    resp = requests.get(baseurl, params=params_d)
+    print(resp.url)
+    respDic = resp.json()
+    return respDic 
+
 
 # conn = sqlite3.connect('geodata.sqlite')
 # cur = conn.cursor()
@@ -72,6 +84,9 @@ def main():
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
     results_for_study = show_tracks(username, studyplaylist)
     results_for_car = show_tracks(username, carplaylist)
+    for artist in results_for_study:
+        dict_results = get_recommendations_from_tastedive(artist, key="349890-SI206Fin-N4RHDBVP")
+        print(dict_results)
     #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
     
     '''playlists = sp.user_playlists(username)
