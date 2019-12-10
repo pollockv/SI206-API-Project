@@ -6,6 +6,7 @@ import os
 import sys
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials #To access authorised Spotify data
+import random
 
 
 client_id = "9db9eeacd0004463b836ed7e1c7869e8"
@@ -52,6 +53,14 @@ def show_tracks(username, playlist_id):
                 track_dict[artist] = [song]
     return track_dict
 
+# Picks 10 random artists from a passed dictionary, to use with TasteDive
+def getRandomArtists(dict):
+    randlist = []
+    randlist = random.sample(list(dict), 10)
+    print(randlist)
+    return randlist
+
+
 def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP"):
     baseurl="https://tastedive.com/api/similar"
     params_d = {}
@@ -62,7 +71,7 @@ def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP")
     resp = requests.get(baseurl, params=params_d)
     print(resp.url)
     respDic = resp.json()
-    return respDic 
+    return respDic
 
 
 # conn = sqlite3.connect('geodata.sqlite')
@@ -84,9 +93,7 @@ def main():
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
     results_for_study = show_tracks(username, studyplaylist)
     results_for_car = show_tracks(username, carplaylist)
-    for artist in results_for_study:
-        dict_results = get_recommendations_from_tastedive(artist, key="349890-SI206Fin-N4RHDBVP")
-        print(dict_results)
+    getRandomArtists(results_for_car)
     #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
     
     '''playlists = sp.user_playlists(username)
