@@ -10,11 +10,11 @@ import bandsintown
 
 # https://app.swaggerhub.com/apis/Bandsintown/PublicAPI/3.0.0#/VenueData
 
-def get_bandsintown_artistinfo(bandName, id="75771b0391833569dedd2b5ceff8d2af"):
-    base_url = "https://rest.bandsintown.com/artists/" + bandName + "?app_id=" + id
+def get_bandsintown_artistinfo(artist, id="75771b0391833569dedd2b5ceff8d2af"):
+    base_url = "https://rest.bandsintown.com/artists/" + artist + "?app_id=" + id
     resp = requests.get(base_url)
-    bandsdict = resp.json()
-    return bandsdict
+    artistdict = resp.json()
+    return artistdict
 
 def get_bandsintown_events(bandName, id="75771b0391833569dedd2b5ceff8d2af", date="upcoming"):
     eventdict = {}
@@ -25,12 +25,20 @@ def get_bandsintown_events(bandName, id="75771b0391833569dedd2b5ceff8d2af", date
         return eventdict
 
 def main():
-    sqldict = {}
-    artists = ["Drake", "Hippo Campus", "STRFKR", "Mac Demarco"]
+    artistlist = ["Drake", "Hippo Campus", "STRFKR", "Mac Demarco"]
 
-    for artist in artists:
-        eventdict = get_bandsintown_events(artist)
-        print(eventdict['name'])
+    for artists in artistlist:
+        eventlist = get_bandsintown_events(artists)
+        artistinfo = get_bandsintown_artistinfo(artists)
+        if eventlist != []:
+            for item in eventlist:
+                # list index at beginning to specify which event
+                artist_name = item['lineup']
+                venue = item['venue']['name']
+                city = item['venue']['city']
+                latitude = item['venue']['latitude']
+                longitude = item['venue']['longitude']
+                print(artist_name, venue, city, latitude, longitude)
 
 if __name__ == "__main__":
     main()
