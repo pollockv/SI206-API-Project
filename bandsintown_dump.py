@@ -6,7 +6,6 @@ import os
 import sys
 import re
 import urllib
-import bandsintown
 
 # https://app.swaggerhub.com/apis/Bandsintown/PublicAPI/3.0.0#/VenueData
 
@@ -23,13 +22,17 @@ def get_bandsintown_events(bandName, id="75771b0391833569dedd2b5ceff8d2af", date
     if resp != []:
         eventdict = resp.json()
         return eventdict
+    else:
+        return []
 
 def main():
     artistlist = ["Drake", "Hippo Campus", "STRFKR", "Mac Demarco"]
 
-    for artists in artistlist:
-        eventlist = get_bandsintown_events(artists)
-        artistinfo = get_bandsintown_artistinfo(artists)
+    for artist in artistlist:
+        eventlist = get_bandsintown_events(artist)
+        artistinfo = get_bandsintown_artistinfo(artist)
+        print(eventlist)
+        print(artistinfo)
         if eventlist != []:
             for item in eventlist:
                 # list index at beginning to specify which event
