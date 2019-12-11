@@ -27,22 +27,24 @@ def get_bandsintown_events(bandName, id="75771b0391833569dedd2b5ceff8d2af", date
 
 def main():
     artistlist = ["Drake", "Hippo Campus", "STRFKR", "Mac Demarco"]
+    name_list = []
+    finallist = []
 
     for artist in artistlist:
         eventlist = get_bandsintown_events(artist)
-        artistinfo = get_bandsintown_artistinfo(artist)
-        print(eventlist)
-        print(artistinfo)
         if eventlist != []:
-            for item in eventlist:
-                # list index at beginning to specify which event
-                #artist_name = item['artist']['name']
-                venue = item['venue']['name']
-                city = item['venue']['city']
-                country = item['venue']['country']
-                latitude = item['venue']['latitude']
-                longitude = item['venue']['longitude']
-                print(venue, city, country, latitude, longitude)
+            artist_name = eventlist[0]['artist']['name']
+            for event in eventlist:
+                #list index at beginning to specify which event
+                venue = event['venue']['name']
+                city = event['venue']['city']
+                country = event['venue']['country']
+                latitude = event['venue']['latitude']
+                longitude = event['venue']['longitude']
+                finallist.append([artist_name, venue, city, country, latitude, longitude])
+                #print(artist_name, venue, city, country, latitude, longitude)
+                
+                print(finallist)
 
 if __name__ == "__main__":
     main()
