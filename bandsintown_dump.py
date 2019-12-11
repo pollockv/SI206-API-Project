@@ -36,12 +36,13 @@ def main():
         if eventlist != []:
             for item in eventlist:
                 # list index at beginning to specify which event
-                artist_name = item['artist']['name']
+                #artist_name = item['artist']['name']
                 venue = item['venue']['name']
                 city = item['venue']['city']
+                country = item['venue']['country']
                 latitude = item['venue']['latitude']
                 longitude = item['venue']['longitude']
-                print(artist_name, venue, city, latitude, longitude)
+                print(venue, city, country, latitude, longitude)
 
 if __name__ == "__main__":
     main()
