@@ -33,7 +33,7 @@ def main():
         if eventlist != []:
             for item in eventlist:
                 # list index at beginning to specify which event
-                artist_name = item['lineup']
+                artist_name = item['artist']['name']
                 venue = item['venue']['name']
                 city = item['venue']['city']
                 latitude = item['venue']['latitude']
