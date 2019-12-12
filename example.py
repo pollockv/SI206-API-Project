@@ -260,11 +260,11 @@ def setUpUpcomingEvents(cur, conn):
             continue
         if eventlist != []:
             artist_name = eventlist[0]['artist']['name']
-            for event in eventlist:
-                venue = event['venue']['name']
-                city = event['venue']['city']
-                country = event['venue']['country']
-                finallist.append([artist_name, venue, city, country])
+            venue = eventlist[0]['venue']['name']
+            city = eventlist[0]['venue']['city']
+            country = eventlist[0]['venue']['country']
+            finallist.append([artist_name, venue, city, country])
+    print(finallist)
     for event in finallist:
         sql_query = 'INSERT INTO UpcomingEvents(event_id, artist_name, venue, city, country) VALUES (NULL, ?,?,?,?)'
         vals = (event[0], event[1], event[2], event[3])
@@ -276,7 +276,6 @@ def setUpLatitude(cur, conn):
     edit_list = []
     revise_lst = []
     finallist = []
-    no_repeats = []
     cur.execute('SELECT list_of_rec FROM RecommForAll')
     artists = cur.fetchall()
     for tup in artists:
@@ -292,28 +291,60 @@ def setUpLatitude(cur, conn):
             continue
         if eventlist != []:
             artist_name = eventlist[0]['artist']['name']
-            for event in eventlist:
-                venue = event['venue']['name']
-                city = event['venue']['city']
-                if 'latitude' not in event['venue']:
-                    lat = ''
-                    finallist.append([artist_name, venue, city, lat])
-                else:
-                    lat = event['venue']['latitude']
-                    finallist.append([artist_name, venue, city, lat])
+            venue = eventlist[0]['venue']['name']
+            city = eventlist[0]['venue']['city']
+            if 'latitude' not in eventlist[0]['venue']:
+                lat = ''
+                finallist.append([artist_name, venue, city, lat])
+            else:
+                lat = eventlist[0]['venue']['latitude']
+                finallist.append([artist_name, venue, city, lat])
     for event in finallist:
-        if event not in no_repeats:
-            no_repeats.append(event)
-    for event in no_repeats:
         cur.execute("SELECT event_id From UpcomingEvents WHERE artist_name = ? AND venue = ? AND city = ?", (event[0], event[1], event[2]))
         event_id = cur.fetchall()[0][0]
+        latitude = event[3]
         sql_query = 'INSERT INTO LatitudeForEvents(event_id, latitude) VALUES (?,?)'
-        vals = (event_id, event[1][3])
+        vals = (event_id, latitude)
         cur.execute(sql_query, vals)
     conn.commit()
         
 
-
+def setUpLongitude(cur, conn):
+    cur.execute('CREATE TABLE IF NOT EXISTS LongitudeForEvents(event_id INTEGER, longitude TEXT)')
+    edit_list = []
+    revise_lst = []
+    finallist = []
+    cur.execute('SELECT list_of_rec FROM RecommForAll')
+    artists = cur.fetchall()
+    for tup in artists:
+        res = ast.literal_eval(tup[0])
+        edit_list.append(res)
+    for lst in edit_list:
+        for artist in lst:
+            if artist not in revise_lst:
+                revise_lst.append(artist)
+    for artist in revise_lst:
+        eventlist = get_bandsintown_events(artist)
+        if eventlist == {'errorMessage': '[NotFound] The artist was not found'}:
+            continue
+        if eventlist != []:
+            artist_name = eventlist[0]['artist']['name']
+            venue = eventlist[0]['venue']['name']
+            city = eventlist[0]['venue']['city']
+            if 'longitude' not in eventlist[0]['venue']:
+                longitude = ''
+                finallist.append([artist_name, venue, city, longitude])
+            else:
+                longitude = eventlist[0]['venue']['longitude']
+                finallist.append([artist_name, venue, city, longitude])
+    for event in finallist:
+        cur.execute("SELECT event_id From UpcomingEvents WHERE artist_name = ? AND venue = ? AND city = ?", (event[0], event[1], event[2]))
+        event_id = cur.fetchall()[0][0]
+        longitude = event[3]
+        sql_query = 'INSERT INTO LongitudeForEvents(event_id, longitude) VALUES (?,?)'
+        vals = (event_id, longitude)
+        cur.execute(sql_query, vals)
+    conn.commit()
 
 
         
@@ -326,9 +357,9 @@ list_car = ['Hozier', 'The Milk Carton Kids', 'Troye Sivan', 'Yumi Zouma', 'Riha
 #setUpArtists(results_for_study, results_for_car, cur, conn)
 #setUpStudyPlaylist(results_for_study, cur, conn)
 #setUpCarPlaylist(results_for_car, cur, conn)
-setUpRandomRecommForStudy(list_study, cur, conn)
-setUpRandomRecommForCar(list_car, cur, conn)
-setUpRecommForAll(cur, conn)
-setUpUpcomingEvents(cur, conn)
-setUpLatitude(cur, conn)
-#setUpLongitude
+#setUpRandomRecommForStudy(list_study, cur, conn)
+#setUpRandomRecommForCar(list_car, cur, conn)
+#setUpRecommForAll(cur, conn)
+#setUpUpcomingEvents(cur, conn)
+#setUpLatitude(cur, conn)
+setUpLongitude(cur, conn)
