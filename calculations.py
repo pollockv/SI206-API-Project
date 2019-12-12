@@ -5,6 +5,12 @@ import os
 import requests
 import ast
 
+
+def saveTextFile(data,filename):
+    outfile = open(filename, 'w')
+    outfile.write(data)
+    outfile.close()
+
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
@@ -15,6 +21,11 @@ cur, conn = setUpDatabase('spotify_database.db')
 
 
 def joinLatLong(cur, conn):
-    cur.execute("SELECT City, Country FROM Customers WHERE Country='Germany UNION ALL SELECT City, Country FROM Suppliers EXCEPT ORDER BY City;")
+    cur.execute("SELECT latitude, longitude FROM LongitudeForEvents JOIN LatitudeForEvents;")
         
-#joinLatLong(cur, conn)
+
+def main():
+    #joinLatLong(cur, conn)
+
+if __name__ == "__main__":
+    main()
