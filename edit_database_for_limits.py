@@ -37,13 +37,20 @@ def artist_database(username, playlist_id):
         cur.execute('SELECT artist_id FROM Artists WHERE artist = ?', (artist, ))
         result = cur.fetchone()
         if result:
-            continue
+            cur.execute('SELECT artist_id FROM Artists WHERE artist = ?', (artist,))
+            artist_id = cur.fetchone()[0]
+            if playlist_id == "2DJapkOfWVgb01aWi3ZNrm":
+                cur.execute('INSERT INTO StudyPlaylist (artist_id, songname) VALUES(?, ?)', (artist_id, song ))
+            else:
+                cur.execute('INSERT INTO CarPlaylist (artist_id, songname) VALUES(?, ?)', (artist_id, song))
         else:
             cur.execute('INSERT INTO Artists (artist_id, artist) VALUES(NULL, ?)', (artist, ))
+            cur.execute('SELECT artist_id FROM Artists WHERE artist = ?', (artist,))
+            artist_id = cur.fetchone()[0]
             if playlist_id == "2DJapkOfWVgb01aWi3ZNrm":
-                cur.execute('INSERT INTO StudyPlaylist (artist_id, songname) VALUES(?, ?)', (result, song ))
+                cur.execute('INSERT INTO StudyPlaylist (artist_id, songname) VALUES(?, ?)', (artist_id, song))
             else:
-                cur.execute('INSERT INTO CarPlaylist (artist_id, songname) VALUES(?, ?)', (result, song))
+                cur.execute('INSERT INTO CarPlaylist (artist_id, songname) VALUES(?, ?)', (artist_id, song))
             count +=1
             conn.commit()
         if count == 20:
@@ -62,13 +69,12 @@ def studyplaylist_database(username, studyplaylist_id):
         if result:
             continue
         else:
-            cur.execute('INSERT INTO StudyPlaylist (artist_id, songname) VALUES(NULL, ?)', (result, song))
+            cur.execute('INSERT INTO StudyPlaylist (artist_id, songname) VALUES(NULL, ?)', (song, ))
             count +=1
             conn.commit()
         if count == 20:
             break
     
-
 
 def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
@@ -76,7 +82,7 @@ def main():
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
     create_tables()
     artist_database(username, studyplaylist)
-    #artist_database(username, carplaylist)
+    artist_database(username, carplaylist)
     #studyplaylist_database(username, studyplaylist)
 
 if __name__ == "__main__":
