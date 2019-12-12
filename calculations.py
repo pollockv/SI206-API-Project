@@ -33,7 +33,10 @@ def setUpDatabase(db_name):
 cur, conn = setUpDatabase('spotify_database.db')
 
 def joinLatLong(cur, conn):
-    cur.execute("SELECT latitude, longitude FROM LongitudeForEvents JOIN LatitudeForEvents;")
+    cur.execute("SELECT latitude, longitude FROM LongitudeForEvents JOIN LatitudeForEvents WHERE LatitudeForEvents.event_id = LongitudeForEvents.event_id;")
+
+def joinPlaylists(cur, conn):
+    cur.execute("SELECT COUNT(StudyPlaylist.artist_id), artist FROM StudyPlaylist JOIN Artists WHERE StudyPlaylist.artist_id = Artists.artist_id GROUP BY StudyPlaylist.artist_id")
 
 def calcBandsInTown(cur, conn):
     datadict = {}
