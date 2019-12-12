@@ -12,7 +12,7 @@ def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP")
     resp = requests.get(baseurl, params=params_d)
     print(resp.url)
     respDic = resp.json()
-    return respDic 
+    return respDic
 
 
 

@@ -15,12 +15,6 @@ client_credentials_manager = SpotifyClientCredentials(client_id=client_id, clien
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager) #spotify object to access API
 
 
-def saveTextFile(data,filename):
-    outfile = open(filename, 'w')
-    outfile.write(data)
-    outfile.close()
-
-
 def readDataFromFile(filename):
     full_path = os.path.join(os.path.dirname(__file__), filename)
     f = open(full_path)
@@ -60,6 +54,10 @@ def getRandomArtists(dict):
     print(randlist)
     return randlist
 
+# gets 20 results and adds to a list
+def getNextItems(dict):
+    for key in dict:
+        if key 
 
 def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP"):
     baseurl="https://tastedive.com/api/similar"
@@ -94,6 +92,7 @@ def main():
     results_for_study = show_tracks(username, studyplaylist)
     results_for_car = show_tracks(username, carplaylist)
     getRandomArtists(results_for_car)
+    print(results_for_car)
     #print(sp.user_playlist_tracks(username, studyplaylist, limit=20, offset=0, market=None))
     
     '''playlists = sp.user_playlists(username)

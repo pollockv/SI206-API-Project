@@ -25,9 +25,9 @@ def get_bandsintown_events(bandName, id="75771b0391833569dedd2b5ceff8d2af", date
     else:
         return []
 
+
 def main():
     artistlist = ["Drake", "Hippo Campus", "STRFKR", "Mac Demarco"]
-    name_list = []
     finallist = []
 
     for artist in artistlist:
@@ -36,8 +36,8 @@ def main():
             artist_name = eventlist[0]['artist']['name']
             for event in eventlist:
                 #list index at beginning to specify which event
-                venue = event['venue']['name']
-                city = event['venue']['city']
+                venue = event[0]['venue']['name']
+                city = event[0]['venue']['city']
                 country = event['venue']['country']
                 latitude = event['venue']['latitude']
                 longitude = event['venue']['longitude']

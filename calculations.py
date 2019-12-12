@@ -19,7 +19,6 @@ def setUpDatabase(db_name):
 
 cur, conn = setUpDatabase('spotify_database.db')
 
-
 def joinLatLong(cur, conn):
     cur.execute("SELECT latitude, longitude FROM LongitudeForEvents JOIN LatitudeForEvents;")
         
