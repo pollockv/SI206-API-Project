@@ -19,11 +19,10 @@ def setUpDatabase(db_name):
 
 cur, conn = setUpDatabase('database.db')
 
-
-def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP"):
+def get_recommendations_from_tastedive(artist, key="349890-SI206Fin-N4RHDBVP"):
     baseurl="https://tastedive.com/api/similar"
     params_d = {}
-    params_d["q"]= bandName
+    params_d["q"]= artist
     params_d["k"]= key
     params_d["type"]= "music"
     params_d["limit"] = "3"
@@ -32,16 +31,38 @@ def get_recommendations_from_tastedive(bandName, key="349890-SI206Fin-N4RHDBVP")
     respDic = resp.json()
     return respDic 
 
-def setUpRecommForAll(cur, conn):
-    count = 0
-    cur.execute('SELECT artist FROM Artists')
-    artists = cur.fetchall()
 
+def table_insert(artist):
+    count = 0
+    artist_recom = {}
+    results = get_recommendations_from_tastedive(artist)['Similar']['Results']
+    for recom in results:
+        if artist in artist_recom:
+            artist_recom[artist].append(recom['Name'])
+        else:
+            artist_recom[artist] = [recom['Name']]
+    for key in artist_recom:
+        artist_str = str(key).strip("()")
+        cleaned_str = artist_str.replace("'',","")
+        cur.execute('SELECT all_artists FROM RecommForAll WHERE all_artists = ?', (cleaned_str, ))
+        result = cur.fetchone()
+        if result:
+            continue
+        else:
+            sql_query = 'INSERT INTO RecommForAll(all_artists, list_of_rec) VALUES (?,?)'
+            vals = (cleaned_str, str(artist_recom[key]))
+            cur.execute(sql_query, vals)
+            count +=1
+            conn.commit()
+        if count == 20:
+            break
 
 def main():
-    #setUpRecommForStudy(list_study, cur, conn)
-    #setUpRecommForCar(list_car, cur, conn)
-    #setUpForAll(cur, conn)
+    createtables()
+    cur.execute('SELECT artist FROM Artists')
+    artists = cur.fetchall()
+    for artist in artists:
+        table_insert(artist)
 
 if __name__ == "__main__":
     main()
