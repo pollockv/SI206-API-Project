@@ -1,0 +1,4 @@
+This is a file containing percentage data for USA events from our UpcomingEvents table.
+Number of events in USA: 54
+Total Number of events: 96
+Percentage for events in USA: 56.25

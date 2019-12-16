@@ -1,0 +1,7 @@
+This function will calculate the distance between the concert venue you input and the University of Michigan
+
+ **********************************
+
+Your input was: SOMA
+
+The Distance between SOMA and University of Michigan is: 3113.32

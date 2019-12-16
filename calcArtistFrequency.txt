@@ -1,0 +1,12 @@
+This will calculate how many times an artist appeared in a playlist
+
+**********************************
+
+Study Playlist Frequency:
+
+[('Maroon 5', 1), ('Selena Gomez', 1), ('Coldplay', 1), ('Shawn Mendes', 1), ('Khalid', 1), ('Travis Scott', 1), ('Eminem', 1), ('Drake', 2), ('Arctic Monkeys', 1), ('Linkin Park', 2), ('Panic! At The Disco', 2), ('Lil Nas X', 1), ('Dan + Shay', 1), ('Luke Bryan', 1), ('The 1975', 1), ('Usher', 1), ('Paramore', 1), ('One Direction', 1), ('Nicki Minaj', 2), ('Cardi B', 1), ('Madonna', 2), ('Taylor Swift', 1), ('Kelly Clarkson', 1), ('Dua Lipa', 1), ('Meghan Trainor', 1), ('Alessia Cara', 2), ('Carly Rae Jepsen', 1), ('Miley Cyrus', 1), ('Lorde', 1), ('Florida Georgia Line', 1), ('Aerosmith', 1), ('Céline Dion', 1), ('Bastille', 1), ('5 Seconds of Summer', 1), ('Charlie Puth', 1), ('Jay Sean', 1), ('A R I Z O N A', 1), ('Jason Mraz', 2), ('Mike Posner', 1), ('The Vamps', 1), ('Ellie Goulding', 1), ('A$AP Rocky', 2), ('King Princess', 1), ('Bryson Tiller', 1), ('OneRepublic', 1), ('Kito', 1), ('Ralph', 1), ('Shura', 1), ('Rina Sawayama', 1), ('LIZ', 1), ('Lizzo', 1), ('Natasha Bedingfield', 1), ('Corinne Bailey Rae', 1), ('Kina Grannis', 1), ('Villagers', 1), ('SOPHIE', 1), ('Sam Smith', 1), ('Jonas Brothers', 1), ('Local Natives', 1), ('Clairo', 1), ('Tame Impala', 1), ('Tennis', 1), ('Alvvays', 1), ('Real Estate', 1)]
+**********************************
+
+Car Playlist Frequency:
+
+[('Maroon 5', 1), ('Khalid', 1), ('Eminem', 1), ('Drake', 1), ('Arctic Monkeys', 2), ('Panic! At The Disco', 2), ('Dan + Shay', 1), ('Luke Bryan', 2), ('Paramore', 2), ('Nicki Minaj', 1), ('Meghan Trainor', 1), ('A$AP Rocky', 1), ('King Princess', 1), ('OneRepublic', 1), ('Lizzo', 1), ('Sam Smith', 2), ('Jonas Brothers', 1), ('Frank Ocean', 1), ('Lana Del Rey', 1), ('Beyoncé', 1), ('All Time Low', 1), ('Ariana Grande', 1), ('Justin Bieber', 1), ('Little Mix', 1), ('Bruno Mars', 1), ('Lady Gaga', 2), ('Rihanna', 1), ('Fleetwood Mac', 2), ('Hailee Steinfeld', 1), ('Demi Lovato', 1), ('Troye Sivan', 1), ('Ed Sheeran', 1), ('John Mayer', 1), ('The Script', 1), ('Hozier', 1), ('Adele', 1), ('P!nk', 1), ('Michael Bublé', 1), ('Paul McCartney', 1), ('Sia', 1), ('Christina Aguilera', 1), ('John Legend', 1), ('The Weeknd', 1), ('Childish Gambino', 1), ('G-Eazy', 1), ('The Aces', 1), ('Tei Shi', 1), ('ABRA', 1), ('FKA twigs', 1), ('Harry Styles', 1), ('Phil Collins', 1), ('JoJo', 1), ('The Milk Carton Kids', 1), ('Yumi Zouma', 1), ('COIN', 1), ('Yellow Days', 1), ('Robyn', 1), ('Toro y Moi', 1)]
