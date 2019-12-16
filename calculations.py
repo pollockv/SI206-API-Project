@@ -6,19 +6,6 @@ import requests
 import ast
 import matplotlib.pyplot as plt
 
-def visualizationBandsInTownPie():
-    # Pie chart, where the slices will be ordered and plotted counter-clockwise:
-    labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
-    sizes = [15, 30, 45, 10]
-    explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-
-    fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
-        shadow=True, startangle=90)
-    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
-    plt.show()
-
 def saveTextFile(data,filename):
     outfile = open(filename, 'w')
     outfile.write(data)
@@ -57,14 +44,28 @@ def calcBandsInTown(cur, conn):
     print(us_number)
     print(total_number)
     percent_us = us_number / total_number * 100
+    print(percent_us)
     for item in datadict:
         saveTextFile(item, 'calcBandsInTown.txt')
+    visualizationBandsInTownPie(us_number,total_number)
         
+def visualizationBandsInTownPie(us_number,total_number):
+    # Pie chart, where the slices will be ordered and plotted counter-clockwise:
+    labels = 'United State', 'Other countries'
+    sizes = [us_number, (total_number)-(us_number)]
+    explode = (0.1, 0) 
+
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    plt.show()
 
 def main():
     #joinLatLong(cur, conn)
     calcBandsInTown(cur, conn)
-    visualizationBandsInTownPie()
+    # visualizationBandsInTownPie()
 
 if __name__ == "__main__":
     main()
