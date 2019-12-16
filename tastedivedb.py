@@ -86,6 +86,36 @@ def carplaylist_table_insert(car_artists):
         if count == 20:
             break
 
+
+def studyplaylist_table_insert(study_artists):
+    count = 0
+    artist_recom = {}
+    for artist_id in study_artists:
+        cur.execute('SELECT artist FROM Artists WHERE artist_id = ?', (artist_id[0], ))
+        artist = cur.fetchone()
+        results = get_recommendations_from_tastedive(artist)['Similar']['Results']
+        for recom in results:
+            if artist in artist_recom:
+                artist_recom[artist].append(recom['Name'])
+            else:
+                artist_recom[artist] = [recom['Name']]
+        for key in artist_recom:
+            artist_str = str(key).strip("()")
+            stripped_str = artist_str.replace("'',", "")
+            cleaned_str = stripped_str.strip("','")
+            cur.execute('SELECT random_artist FROM RecommForStudy WHERE random_artist = ?', (cleaned_str, ))
+            result = cur.fetchone()
+            if result:
+                continue
+            else:
+                query1 = 'INSERT INTO RecommForStudy(random_artist, list_of_rec) VALUES (?,?)'
+                vals = (cleaned_str, str(artist_recom[key]))
+                cur.execute(query1, vals)
+                count +=1
+                conn.commit()
+        if count == 20:
+            break
+
 def main():
 
     createtables()
@@ -96,6 +126,10 @@ def main():
     cur.execute('SELECT artist_id FROM CarPlaylist')
     car_artists = cur.fetchall()
     carplaylist_table_insert(car_artists)
+
+    cur.execute('SELECT artist_id FROM StudyPlaylist')
+    study_artists = cur.fetchall()
+    carplaylist_table_insert(study_artists)
 
 
 if __name__ == "__main__":
