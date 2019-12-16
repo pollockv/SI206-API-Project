@@ -26,7 +26,7 @@ def create_tables():
     cur.execute('CREATE TABLE IF NOT EXISTS StudyPlaylist(artist_id INTEGER, songname TEXT)')
     cur.execute('CREATE TABLE IF NOT EXISTS CarPlaylist(artist_id INTEGER, songname TEXT)')
 
-def artist_database(username, playlist_id):
+def table_insert(username, playlist_id):
     count = 0
     results = sp.user_playlist(username, playlist_id, fields="tracks,next")
     tracks = results['tracks']
@@ -55,34 +55,14 @@ def artist_database(username, playlist_id):
             conn.commit()
         if count == 20:
             break
-    
-def studyplaylist_database(username, studyplaylist_id):
-    count = 0
-    results = sp.user_playlist(username, studyplaylist_id, fields="tracks,next")
-    tracks = results['tracks']
-    for item in enumerate(tracks['items']):
-        track = item[1]['track']
-        artist = track['artists'][0]['name']
-        song = track['name']
-        cur.execute('SELECT artist_id FROM Artists WHERE artist = ?', (artist, ))
-        result = cur.fetchone()
-        if result:
-            continue
-        else:
-            cur.execute('INSERT INTO StudyPlaylist (artist_id, songname) VALUES(NULL, ?)', (song, ))
-            count +=1
-            conn.commit()
-        if count == 20:
-            break
-    
 
 def main():
     studyplaylist = "2DJapkOfWVgb01aWi3ZNrm" #chosen playlist
     carplaylist = "1I2JfNqzWCNvGUI6EDbqVC"
     username = "p85ag2eg0vz37ioz6t2iw1t2s"
     create_tables()
-    artist_database(username, studyplaylist)
-    artist_database(username, carplaylist)
+    table_insert(username, studyplaylist)
+    table_insert(username, carplaylist)
     #studyplaylist_database(username, studyplaylist)
 
 if __name__ == "__main__":
