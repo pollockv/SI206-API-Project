@@ -103,7 +103,7 @@ def main():
 
     # Pass list into db
     table_insert(finallist)
-    #latlong_insert(finallist)
+    latlong_insert(finallist)
 
 if __name__ == "__main__":
     main()

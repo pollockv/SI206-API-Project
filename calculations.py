@@ -37,19 +37,19 @@ cur, conn = setUpDatabase('spotify_database.db')
 
 #percentage data for USA events from our UpcomingEvents table
 def calcBandsInTown(cur, conn):
-    datadict = {}
-    info = "This is a file containing percentage data for USA events from our UpcomingEvents table."
-    saveTextFile(info, 'calcBandsInTown.txt')
     cur.execute("SELECT count(country) FROM UpcomingEvents WHERE country = 'United States';")
     us_number = cur.fetchall()[0][0]
     cur.execute("SELECT count(country) FROM UpcomingEvents;")
     total_number = cur.fetchall()[0][0]
-    print("Number of events in USA: " +str(us_number))
-    print("Total Number of events: " +str(total_number))
     percent_us = us_number / total_number * 100
-    print("Percentage for events in USA: " +str(percent_us))
-    for item in datadict:
-        saveTextFile(item, 'calcBandsInTown.txt')
+
+    info = "This is a file containing percentage data for USA events from our UpcomingEvents table.\n"
+    us_str = "Number of events in USA: " +str(us_number) + "\n"
+    total_str = "Total Number of events: " +str(total_number) + "\n"
+    percent_str = "Percentage for events in USA: " +str(percent_us) + "\n"
+    combined_str = info + us_str + total_str + percent_str
+    saveTextFile(combined_str, 'calcBandsInTown.txt')
+
     visualizationBandsInTownPie(us_number,total_number)
         
 def visualizationBandsInTownPie(us_number,total_number):
@@ -94,7 +94,7 @@ def get_Long_Lat(cur, conn):
     info = "This function will calculate the distance between concert venue and University of Michigan/n"
     saveTextFile(info, 'calcDistance.txt')
 
-    venue = input("Enter venu : ")
+    venue = input("Enter venue : ")
     cur.execute("SELECT latitude, longitude FROM LongitudeForEvents JOIN LatitudeForEvents JOIN UpcomingEvents WHERE venue=(?) and LatitudeForEvents.event_id = UpcomingEvents.event_id and LongitudeForEvents.event_id = UpcomingEvents.event_id", (venue,))
     results = cur.fetchall()      
     # print(results)
@@ -113,9 +113,11 @@ def calDistance(lat, lon):
 
     lat1 = radians(lat)
     lon1 = radians(lon)
+    coord1 = "The first set of coordinates is ({},{})\n".format(lat1,lon1)
 
     lat2 = radians(42.2780)
     lon2 = radians(-83.7382)
+    coord1 = "The second set of coordinates is ({},{})\n".format(lat2,lon2)
 
     dlon = lon2 - lon1
     dlat = lat2 - lat1
@@ -125,7 +127,6 @@ def calDistance(lat, lon):
 
     distance = round((R * c),2)
     
-    print("The Distance between university of Michigan and venue is: ", distance)
     return distance
 
 def DistanceVisual(lat1, lon1,venue, distance): 
@@ -137,19 +138,20 @@ def DistanceVisual(lat1, lon1,venue, distance):
 
 #This will calculate how many times an artist appeared in each play list
 def get_artist_playList(cur, conn):
-    info = "This will calculate how many times an artist appeared in play list/n"
-    saveTextFile(info, 'calcDistance.txt')
+    info = "This will calculate how many times an artist appeared in a playlist\n"
 
     cur.execute("SELECT artist, COUNT(StudyPlaylist.artist_id) FROM StudyPlaylist JOIN Artists WHERE StudyPlaylist.artist_id = Artists.artist_id GROUP BY StudyPlaylist.artist_id")
     Study_results = cur.fetchall()
     print("Study PlayList")      
-    print(Study_results)
+    study_str = "\n**********************************\n\nStudy Playlist Frequency:\n\n" + str(Study_results)
     
     cur.execute("SELECT artist, COUNT(CarPlaylist.artist_id) FROM CarPlaylist JOIN Artists WHERE CarPlaylist.artist_id = Artists.artist_id GROUP BY CarPlaylist.artist_id")
     Car_results = cur.fetchall()     
-    print("Car PlayList")  
+    car_str = "\n**********************************\n\nCar Playlist Frequency:\n\n" + str(Car_results)
     print(Car_results)
 
+    combined_str = info + study_str + car_str
+    saveTextFile(combined_str, 'calcArtistFrequency.txt')
     calc_Artistfreq_PlayList(Study_results, Car_results)
 
 
@@ -160,13 +162,12 @@ def calc_Artistfreq_PlayList(list1, list2):
             if item1[0] == item2[0]:
                 newValue = item1[1] + item2[1]
                 freq_list.append((item1[0], newValue))
-    print("The list of Artists that appear in both play list:")
-    print(freq_list)
 
     words = ""
     for item in freq_list:
         words = words+item[0]+" "
-        saveTextFile(words, 'playList.txt')
+    info = "The list of Artists that appear in both playlists:\n\n ******************************\n\n" + words
+    saveTextFile(info, "calcPlaylistArtistFreq.txt")
     draw_wordcloud(words)
 
 def draw_wordcloud(artits):
