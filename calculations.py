@@ -91,20 +91,17 @@ def draw_barchart(CountryList):
 
 #get distance between a venue and University of Michigan
 def get_Long_Lat(cur, conn):
-    info = "This function will calculate the distance between concert venue and University of Michigan/n"
-    saveTextFile(info, 'calcDistance.txt')
+    info = "This function will calculate the distance between the concert venue you input and the University of Michigan\n\n **********************************\n\n"
 
     venue = input("Enter venue : ")
     cur.execute("SELECT latitude, longitude FROM LongitudeForEvents JOIN LatitudeForEvents JOIN UpcomingEvents WHERE venue=(?) and LatitudeForEvents.event_id = UpcomingEvents.event_id and LongitudeForEvents.event_id = UpcomingEvents.event_id", (venue,))
-    results = cur.fetchall()      
-    # print(results)
-
-    result_txt = "The Distance between " +venue+ "and University of Michigan is: "
-    saveTextFile(result_txt, 'calcDistance.txt')
+    results = cur.fetchall()
 
     Distance = calDistance(float(results[0][0]), float(results[0][1]))
-    
-    saveTextFile(str(Distance), 'calcDistance.txt')
+    yourinput = "Your input was: " + venue + "\n\n"
+    result_txt = "The Distance between " + venue + " and University of Michigan is: " + str(Distance)
+    combined_str = info + yourinput + result_txt
+    saveTextFile(combined_str, 'calcDistance.txt')
     DistanceVisual(float(results[0][0]), float(results[0][1]),venue,Distance)
 
 def calDistance(lat, lon):
