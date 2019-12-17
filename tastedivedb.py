@@ -129,7 +129,7 @@ def main():
 
     cur.execute('SELECT artist_id FROM StudyPlaylist')
     study_artists = cur.fetchall()
-    carplaylist_table_insert(study_artists)
+    studyplaylist_table_insert(study_artists)
 
 
 if __name__ == "__main__":
