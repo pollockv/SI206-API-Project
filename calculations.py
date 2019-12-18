@@ -105,7 +105,7 @@ def visualization_Long_Lat(cur, conn):
 
     artist_name = results[0][0]
     g = nx.DiGraph()
-    g.add_nodes_from(artist_name)
+    # g.add_nodes_from(artist_name)
     g.add_edge(artist_name,Recommendation[0])
     g.add_edge(artist_name,Recommendation[1])
     g.add_edge(artist_name,Recommendation[2])
