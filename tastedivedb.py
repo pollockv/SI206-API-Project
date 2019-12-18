@@ -17,7 +17,7 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
-cur, conn = setUpDatabase('test-database.db')
+cur, conn = setUpDatabase('final-database.db')
 
 def get_recommendations_from_tastedive(artist, key="349890-SI206Fin-N4RHDBVP"):
     baseurl="https://tastedive.com/api/similar"

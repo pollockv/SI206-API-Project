@@ -19,7 +19,7 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
-cur, conn = setUpDatabase('test-database.db')
+cur, conn = setUpDatabase('final-database.db')
 
 def create_tables():
     cur.execute('CREATE TABLE IF NOT EXISTS Artists(artist_id INTEGER PRIMARY KEY, artist TEXT UNIQUE)')
