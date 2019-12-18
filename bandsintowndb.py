@@ -17,7 +17,7 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
-cur, conn = setUpDatabase('test-database.db')
+cur, conn = setUpDatabase('final-database.db')
 
 
 def get_bandsintown_events(bandName, id="75771b0391833569dedd2b5ceff8d2af", date="upcoming"):
