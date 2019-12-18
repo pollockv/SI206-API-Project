@@ -37,7 +37,7 @@ def setUpDatabase(db_name):
     # conn.close()
     return cur, conn
 
-cur, conn = setUpDatabase('spotify_database.db')
+cur, conn = setUpDatabase('final-database.db')
 
 #percentage data for USA events from our UpcomingEvents table
 def calcBandsInTown(cur, conn):
