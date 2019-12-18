@@ -12,6 +12,10 @@ from math import sin, cos, sqrt, atan2, radians
 import geoplotlib
 import pandas as pd
 from geoplotlib.utils import read_csv
+import networkx as nx
+
+
+
 
 def saveTextFile(data,filename):
     outfile = open(filename, 'w')
@@ -87,6 +91,36 @@ def draw_barchart(CountryList):
     plt.xticks(rotation=90)
     plt.tight_layout()
     plt.show()    
+
+
+    #************************************************************************************
+
+def visualization_Long_Lat(cur, conn):
+    artist = input("Enter artist name : ")
+    cur.execute("SELECT all_artists, list_of_rec FROM RecommForAll WHERE all_artists=?", (artist,))
+    results = cur.fetchall()
+    # print(results)
+
+    Recommendation = ast.literal_eval(results[0][1])
+
+    artist_name = results[0][0]
+    g = nx.DiGraph()
+    g.add_nodes_from(artist_name)
+    g.add_edge(artist_name,Recommendation[0])
+    g.add_edge(artist_name,Recommendation[1])
+    g.add_edge(artist_name,Recommendation[2])
+
+
+    nx.draw(g,with_labels=True)
+    plt.draw()
+    plt.show()
+
+    # for artist in results:
+    #     artist_name.append(artist[0])
+    #     Recommendation.append(artist[1])
+    
+
+
 #************************************************************************************
 
 #get distance between a venue and University of Michigan
@@ -175,15 +209,11 @@ def draw_wordcloud(artits):
     plt.show()
 #************************************************************************************
 
-
-
-
-#************************************************************************************
-
 def main():
     calcBandsInTown(cur, conn)
     get_events_by_country(cur, conn)
     get_artist_playList(cur, conn)
+    visualization_Long_Lat(cur, conn)
     get_Long_Lat(cur, conn)
 
 
